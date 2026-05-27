@@ -38,5 +38,4 @@ public class MusicaRequest {
     public void setArtistaId(Long artistaId) {
         this.artistaId = artistaId;
     }
-// getters e setters
 }
