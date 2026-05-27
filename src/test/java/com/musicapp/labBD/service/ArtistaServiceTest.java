@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,6 +37,7 @@ public class ArtistaServiceTest {
         Artista resultado = service.buscarPorId(1L);
 
         assertThat(resultado.getNome()).isEqualTo("Queen");
+        verify(repository, times(1)).findById(1L);
     }
 
     @Test
@@ -42,6 +45,7 @@ public class ArtistaServiceTest {
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> service.buscarPorId(99L));
+        verify(repository, times(1)).findById(99L);
     }
 
     @Test
@@ -51,16 +55,19 @@ public class ArtistaServiceTest {
         existente.setNome("Queen");
         existente.setNacionalidade("Britânica");
 
-        Artista dados = new Artista();
-        dados.setNome("Queen Updated");
-        dados.setNacionalidade("Inglesa");
+        Artista dadosAlterados = new Artista();
+        dadosAlterados.setNome("Queen Updated");
+        dadosAlterados.setNacionalidade("Inglesa");
 
         when(repository.findById(1L)).thenReturn(Optional.of(existente));
-        when(repository.save(any())).thenReturn(existente);
+        when(repository.save(any(Artista.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Artista resultado = service.atualizar(1L, dados);
+        Artista resultado = service.atualizar(1L, dadosAlterados);
 
         assertThat(resultado.getNome()).isEqualTo("Queen Updated");
+        assertThat(resultado.getNacionalidade()).isEqualTo("Inglesa");
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).save(any(Artista.class));
     }
 
     @Test
@@ -73,9 +80,26 @@ public class ArtistaServiceTest {
 
         service.deletar(1L);
 
-        assertThrows(RuntimeException.class, () -> {
-            when(repository.findById(1L)).thenReturn(Optional.empty());
-            service.buscarPorId(1L);
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void deveCriarArtista() {
+        Artista artista = new Artista();
+        artista.setNome("Queen");
+        artista.setNacionalidade("Britânica");
+
+        when(repository.save(any(Artista.class))).thenAnswer(invocation -> {
+            Artista artistaEnviado = invocation.getArgument(0);
+            artistaEnviado.setId(1L);
+            return artistaEnviado;
         });
+
+        Artista resultado = service.criar(artista);
+
+        assertThat(resultado.getNome()).isEqualTo("Queen");
+        assertThat(resultado.getNacionalidade()).isEqualTo("Britânica");
+        verify(repository, times(1)).save(any(Artista.class));
     }
 }
