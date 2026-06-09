@@ -1,53 +1,37 @@
 package com.musicapp.labBD.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class PlaylistId implements Serializable {
 
-    @Column(name = "playlist_id")
     private Long playlistId;
+    private Long usuario;
 
-    @Column(name = "usuario_id")
-    private Long usuarioId;
+    public PlaylistId() {}
 
-    public PlaylistId() {
-    }
-
-    public PlaylistId(Long usuarioId, Long playlistId) {
-        this.usuarioId = usuarioId;
+    public PlaylistId(Long playlistId, Long usuario) {
         this.playlistId = playlistId;
+        this.usuario = usuario;
     }
 
-    public Long getPlaylistId() {
-        return playlistId;
-    }
+    public Long getPlaylistId() { return playlistId; }
+    public void setPlaylistId(Long playlistId) { this.playlistId = playlistId; }
 
-    public void setPlaylistId(Long playlistId) {
-        this.playlistId = playlistId;
-    }
-
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+    public Long getUsuario() { return usuario; }
+    public void setUsuario(Long usuario) { this.usuario = usuario; }
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaylistId that = (PlaylistId) o;
-        return Objects.equals(playlistId, that.playlistId) && Objects.equals(usuarioId, that.usuarioId);
+        return Objects.equals(playlistId, that.playlistId) &&
+                Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playlistId, usuarioId);
+        return Objects.hash(playlistId, usuario);
     }
 }

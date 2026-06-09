@@ -51,5 +51,14 @@ public class MusicaService {
         buscarPorId(id);
         musicaRepository.deleteById(id);
     }
+
+    public List<Musica> listarMusicasMaisCurtasQueMedia() {
+        return musicaRepository.findMusicasMaisCurtasQueAMediaDoArtista();
+    }
+
+    public Musica buscarPorIdOtimizado(Long id) {
+        return musicaRepository.findByIdWithArtista(id)
+                .orElseThrow(() -> new RuntimeException("Música não encontrada"));
+    }
 }
 

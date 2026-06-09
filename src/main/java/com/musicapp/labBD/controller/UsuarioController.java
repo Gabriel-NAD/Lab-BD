@@ -1,8 +1,8 @@
 package com.musicapp.labBD.controller;
 
-import com.musicapp.labBD.dto.ArtistaRequest;
-import com.musicapp.labBD.service.ArtistaService;
-import com.musicapp.labBD.entity.Artista;
+import com.musicapp.labBD.dto.UsuarioRequest;
+import com.musicapp.labBD.entity.Usuario;
+import com.musicapp.labBD.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,34 +10,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/artistas")
-public class ArtistaController {
+@RequestMapping("/usuarios")
+public class UsuarioController {
 
     @Autowired
-    private ArtistaService service;
-
-    @GetMapping("/sem-playlist")
-    public ResponseEntity<List<Artista>> buscarArtistasSemPlaylist() {
-        return ResponseEntity.ok(service.listarArtistasSemMusicasEmPlaylists());
-    }
+    private UsuarioService service;
 
     @PostMapping
-    public ResponseEntity<Artista> criar(@RequestBody ArtistaRequest request) {
+    public ResponseEntity<Usuario> criar(@RequestBody UsuarioRequest request) {
         return ResponseEntity.status(201).body(service.criar(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Artista> buscar(@PathVariable Long id) {
+    public ResponseEntity<Usuario> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Artista>> listarTodos() {
+    public ResponseEntity<List<Usuario>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Artista> atualizar(@PathVariable Long id, @RequestBody ArtistaRequest request) {
+    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody UsuarioRequest request) {
         return ResponseEntity.ok(service.atualizar(id, request));
     }
 

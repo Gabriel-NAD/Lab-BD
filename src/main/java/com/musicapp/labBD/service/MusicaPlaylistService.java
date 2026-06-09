@@ -8,6 +8,8 @@ import com.musicapp.labBD.repository.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MusicaPlaylistService {
 
@@ -30,8 +32,8 @@ public class MusicaPlaylistService {
 
         MusicaPlaylistId id = new MusicaPlaylistId(
                 musica.getId(),
-                playlist.getId().getPlaylistId(),
-                playlist.getId().getUsuarioId()
+                playlist.getPlaylistId(),
+                playlist.getUsuarioId()
         );
 
         MusicaPlaylist musicaPlaylist = new MusicaPlaylist();
@@ -49,5 +51,9 @@ public class MusicaPlaylistService {
             throw new RuntimeException("Música não está nesta playlist");
         }
         musicaPlaylistRepository.deleteById(id);
+    }
+
+    public List<Musica> listarMusicasPorUsuarioEArtista(String username, String nomeArtista) {
+        return musicaPlaylistRepository.findMusicasByUsuarioAndArtista(username, nomeArtista);
     }
 }
