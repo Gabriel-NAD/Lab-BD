@@ -56,9 +56,13 @@ public class MusicaService {
         return musicaRepository.findMusicasMaisCurtasQueAMediaDoArtista();
     }
 
-    public Musica buscarPorIdOtimizado(Long id) {
+    public Musica buscarDetalhesCompletos(Long id) {
         return musicaRepository.findByIdWithArtista(id)
                 .orElseThrow(() -> new RuntimeException("Música não encontrada"));
+    }
+
+    public List<Musica> buscarComparacaoTop1(String artistaPrincipal, String artistaComparacao) {
+        return musicaRepository.buscarMaioresQueMaximoOutroArtista(artistaPrincipal, artistaComparacao);
     }
 }
 

@@ -56,4 +56,12 @@ public class MusicaPlaylistService {
     public List<Musica> listarMusicasPorUsuarioEArtista(String username, String nomeArtista) {
         return musicaPlaylistRepository.findMusicasByUsuarioAndArtista(username, nomeArtista);
     }
+
+    public List<MusicaPlaylistRepository.MusicaComOrdemDTO> listarMusicasComOrdem(String nomePlaylist) {
+        return musicaPlaylistRepository.buscarMusicasComOrdemPorPlaylist(nomePlaylist);
+    }
+
+    public List<String> buscarUsernamesPorMusica(String tituloMusica) {
+        return musicaPlaylistRepository.buscarUsernamesPorTituloMusica(tituloMusica);
+    }
 }

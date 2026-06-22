@@ -22,43 +22,43 @@ public class PlaylistController {
         return ResponseEntity.status(201).body(playlistService.criar(request));
     }
 
-    @GetMapping("/{playlistId}/usuario/{usuarioId}")
-    public ResponseEntity<Playlist> buscar(@PathVariable Long playlistId,
-                                           @PathVariable Long usuarioId) {
-        return ResponseEntity.ok(playlistService.buscarPorId(playlistId, usuarioId));
-    }
-
     @GetMapping
     public ResponseEntity<List<Playlist>> listarTodas() {
         return ResponseEntity.ok(playlistService.listarTodas());
     }
 
-    @PutMapping("/{playlistId}/usuario/{usuarioId}")
-    public ResponseEntity<Playlist> atualizar(@PathVariable Long playlistId,
-                                              @PathVariable Long usuarioId,
-                                              @RequestBody PlaylistRequest request) {
-        return ResponseEntity.ok(playlistService.atualizar(playlistId, usuarioId, request));
+    @PostMapping("/{playlistId}/usuario/{usuarioId}/musicas/{musicaId}")
+    public ResponseEntity<Playlist> adicionarMusica(@PathVariable Long playlistId,
+                                                    @PathVariable Long usuarioId,
+                                                    @PathVariable Long musicaId) {
+        return ResponseEntity.ok(playlistService.adicionarMusica(playlistId, usuarioId, musicaId));
     }
 
-    @DeleteMapping("/{playlistId}/usuario/{usuarioId}")
-    public ResponseEntity<Void> deletar(@PathVariable Long playlistId,
-                                        @PathVariable Long usuarioId) {
-        playlistService.deletar(playlistId, usuarioId);
+    @DeleteMapping("/{playlistId}/usuario/{usuarioId}/musicas/{musicaId}")
+    public ResponseEntity<Void> removerMusica(@PathVariable Long playlistId,
+                                              @PathVariable Long usuarioId,
+                                              @PathVariable Long musicaId) {
+        playlistService.removerMusica(playlistId, usuarioId, musicaId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/usuario/{username}")
-    public ResponseEntity<List<Playlist>> playlistsPorUsuario(@PathVariable String username) {
-        return ResponseEntity.ok(playlistService.listarPlaylistsPorUsuario(username));
+    @GetMapping("/por-usuario")
+    public ResponseEntity<List<Playlist>> listarPorUsuario(@RequestParam String username) {
+        return ResponseEntity.ok(playlistService.listarPorUsuario(username));
     }
 
-    @GetMapping("/contagem")
-    public ResponseEntity<List<PlaylistRepository.PlaylistMusicaCountDTO>> contagemMusicasPorPlaylist() {
+    @GetMapping("/contagem-musicas")
+    public ResponseEntity<List<PlaylistRepository.PlaylistMusicaCountDTO>> contarMusicas() {
         return ResponseEntity.ok(playlistService.contarMusicasPorPlaylist());
     }
 
-    @GetMapping("/tempo-total")
-    public ResponseEntity<List<PlaylistRepository.PlaylistTempo>> obterTempoTotal() {
-        return ResponseEntity.ok(playlistService.listarTempoTotalPlaylists());
+    @PostMapping("/transferir-musica")
+    public ResponseEntity<Void> transferir(
+            @RequestParam Long usuarioId,
+            @RequestParam Long musicaId,
+            @RequestParam Long playlistOrigemId,
+            @RequestParam Long playlistDestinoId) {
+        playlistService.transferirMusica(usuarioId, musicaId, playlistOrigemId, playlistDestinoId);
+        return ResponseEntity.noContent().build();
     }
 }

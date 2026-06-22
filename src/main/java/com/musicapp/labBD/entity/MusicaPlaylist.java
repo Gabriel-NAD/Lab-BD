@@ -1,5 +1,6 @@
 package com.musicapp.labBD.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,7 +20,9 @@ public class MusicaPlaylist {
             @JoinColumn(name = "playlist_id", referencedColumnName = "playlist_id", insertable = false, updatable = false),
             @JoinColumn(name = "usuario_id",  referencedColumnName = "usuario_id",  insertable = false, updatable = false)
     })
+    @JsonBackReference
     private Playlist playlist;
+
     @Column(name = "ordem_na_playlist", nullable = false)
     private Integer ordemNaPlaylist;
 

@@ -1,5 +1,6 @@
 package com.musicapp.labBD.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Playlist {
     private LocalDateTime dataCriacao;
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<MusicaPlaylist> musicas;
 
     @PrePersist

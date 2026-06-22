@@ -45,4 +45,8 @@ public class ArtistaService {
     public List<Artista> listarArtistasSemMusicasEmPlaylists() {
         return repository.findArtistasSemMusicasEmPlaylists();
     }
+
+    public List<ArtistaRepository.ArtistaRankingDTO> obterRankingArtistas() {
+        return repository.buscarRankingDeArtistas();
+    }
 }

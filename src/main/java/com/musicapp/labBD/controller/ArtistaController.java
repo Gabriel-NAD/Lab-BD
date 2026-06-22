@@ -1,6 +1,7 @@
 package com.musicapp.labBD.controller;
 
 import com.musicapp.labBD.dto.ArtistaRequest;
+import com.musicapp.labBD.repository.ArtistaRepository;
 import com.musicapp.labBD.service.ArtistaService;
 import com.musicapp.labBD.entity.Artista;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,10 @@ public class ArtistaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<ArtistaRepository.ArtistaRankingDTO>> obterRanking() {
+        return ResponseEntity.ok(service.obterRankingArtistas());
     }
 }

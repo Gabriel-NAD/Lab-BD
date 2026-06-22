@@ -38,7 +38,7 @@ public class MusicaController {
 
     @GetMapping("/{id}/detalhes")
     public ResponseEntity<Musica> buscarComDetalhes(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorIdOtimizado(id));
+        return ResponseEntity.ok(service.buscarDetalhesCompletos(id));
     }
 
     @GetMapping("/{id}")
@@ -60,5 +60,12 @@ public class MusicaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/comparacao-top1")
+    public ResponseEntity<List<Musica>> compararTop1(
+            @RequestParam String artistaPrincipal,
+            @RequestParam String artistaComparacao) {
+        return ResponseEntity.ok(service.buscarComparacaoTop1(artistaPrincipal, artistaComparacao));
     }
 }
